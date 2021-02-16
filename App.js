@@ -1,21 +1,64 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { View, Text, StatusBar } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons'
 
-export default function App() {
+import Home from './src/screens/home'
+import Login from './src/screens/login'
+import Products from './src/screens/products'
+
+const Tab = createBottomTabNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NavigationContainer>
+      <StatusBar />
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            if (route.name === 'Home') {
+              return (
+                <Ionicons
+                  name={
+                    focused
+                      ? 'ios-home'
+                      : 'ios-home'
+                  }
+                  size={size}
+                  color={color}
+                />
+              );
+            } else if (route.name === 'Login') {
+              return (
+                <Ionicons
+                  name={focused ? 'ios-log-in' : 'ios-log-in'}
+                  size={size}
+                  color={color}
+                />
+              );
+            } else if (route.name === 'Products') {
+              return (
+                <Ionicons
+                  name={focused ? 'ios-list' : 'ios-list'}
+                  size={size}
+                  color={color}
+                />
+              );
+            }
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'black',
+          inactiveTintColor: 'gray',
+        }}
+      >
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Login" component={Login}/>
+        <Tab.Screen name="Products" component={Products} options={{tabBarBadge: 6}}/>
+      </Tab.Navigator>
+    </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
